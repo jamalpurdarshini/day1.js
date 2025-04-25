@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🛒 Mini Shopping Cart</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        margin-right: 10px;
+        background-color: #e91e63;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #c2185b;
+      }
+
+      #output {
+        background-color: white;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🛍️ Women's Fashion Shopping Cart</h1>
+
+    <button class="btn" onclick="addItemsToCart()">Add Items</button>
+    <button class="btn" onclick="displayCart()">Show Cart</button>
+    <button class="btn" onclick="startCalculation()">Total amount</button>
+
+    <div id="output"></div>
+
+    <script>
+      // ✅ 1. Variables & Data Types
+      let cartItems = []; // Array
+      const TAX_RATE = 0.1; // Number (constant)
+      var discount = 0; // Global variable (var)
+
+      // ✅ 2. Function Scope
+      function addItemsToCart() {
+        // Objects with string, number, category
+        const item1 = { name: "Dress", price: 1000, category: "Clothing" };
+        const item2 = { name: "Handbag", price: 1500, category: "Accessories" };
+        const item3 = { name: "Shoes", price: 1200, category: "Footwear" };
+        const item4 = {
+          name: "Sunglasses",
+          price: 800,
+          category: "Accessories",
+        };
+        const item5 = { name: "Scarf", price: 400, category: "Clothing" };
+
+        // ✅ Assignment Operator
+        cartItems = [item1, item2, item3, item4, item5];
+
+        document.getElementById("output").innerHTML =
+          "<p>Items added to cart.</p>";
+      }
+
+      function displayCart() {
+        if (cartItems.length === 0) {
+          document.getElementById("output").innerHTML = "<p>Cart is empty.</p>";
+          return;
+        }
+
+        let html = "<h3>📦 Items in Cart:</h3><ul>";
+        cartItems.forEach((item) => {
+          html += `<li>${item.name} - ₹${item.price} (${item.category})</li>`;
+        });
+        html += "</ul>";
+        document.getElementById("output").innerHTML = html;
+      }
+
+      // ✅ 3. Arithmetic, Comparison, Ternary Operators
+      function calculateTotal() {
+        let subtotal = 0;
+
+        // ✅ Block Scope with let
+        for (let i = 0; i < cartItems.length; i++) {
+          subtotal += cartItems[i].price; // Arithmetic + assignment
+        }
+
+        const tax = subtotal * TAX_RATE;
+        const totalWithTax = subtotal + tax;
+
+        // ✅ Ternary Operator
+        discount = totalWithTax > 3000 ? 0.2 : 0.1;
+        const discountAmount = totalWithTax * discount;
+        const finalTotal = totalWithTax - discountAmount;
+
+        const result = `
+      <h3>Billing Summary:</h3>
+      <p>Total (before tax & discount): ₹${subtotal.toFixed(2)}</p>
+      <p>Tax: ₹${tax.toFixed(2)}</p>
+      <p>Discount (${discount * 100}%): ₹${discountAmount.toFixed(2)}</p>
+      <p><strong>Final Total: ₹${finalTotal.toFixed(2)}</strong></p>
+    `;
+
+        document.getElementById("output").innerHTML = result;
+      }
+
+      // ✅ 4. JavaScript Runtime: setTimeout()
+      function startCalculation() {
+        document.getElementById("output").innerHTML = "<p>Calculating...</p>";
+        setTimeout(() => {
+          calculateTotal();
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>
